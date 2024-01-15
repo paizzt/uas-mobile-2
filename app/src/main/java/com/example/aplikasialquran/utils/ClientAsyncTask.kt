@@ -59,3 +59,15 @@ class GetAddressIntentService : IntentService(IDENTIFIER) {
             sendResultsToReceiver(2, addressDetails.toString())
         }
     }
+
+     //to send results to receiver in the source activity
+    private fun sendResultsToReceiver(resultCode: Int, message: String) {
+        val bundle = Bundle()
+        bundle.putString("address_result", message)
+        addressResultReceiver!!.send(resultCode, bundle)
+    }
+
+    companion object {
+        private const val IDENTIFIER = "GetAddressIntentService"
+    }
+}
