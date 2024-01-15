@@ -19,3 +19,14 @@ class FragmentJadwalSholat : BottomSheetDialogFragment() {
         super.onActivityCreated(savedInstanceState)
         (view!!.parent as View).setBackgroundColor(Color.TRANSPARENT)
     }
+
+     companion object {
+        @JvmStatic
+        fun newInstance(string: String?): FragmentJadwalSholat {
+            val f = FragmentJadwalSholat()
+            val args = Bundle()
+            args.putString("detail", string)
+            f.arguments = args
+            return f
+        }
+    }
