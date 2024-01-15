@@ -73,3 +73,8 @@ class GetAddressIntentService : IntentService(IDENTIFIER) {
         bundle.putString("address_result", message)
         addressResultReceiver!!.send(resultCode, bundle)
     }
+
+    companion object {
+        private const val IDENTIFIER = "GetAddressIntentService"
+    }
+}
