@@ -65,3 +65,24 @@ class FragmentJadwalSholat : BottomSheetDialogFragment() {
                 loadJadwal(spinKota!!.id)
             }
         }
+
+           val datePickerTimeline: DatePickerTimeline = v.findViewById(R.id.dateTimeline)
+        val date = Calendar.getInstance()
+        val mYear: Int = date.get(Calendar.YEAR)
+        val mMonth: Int = date.get(Calendar.MONTH)
+        val mDay: Int = date.get(Calendar.DAY_OF_MONTH)
+
+        datePickerTimeline.setInitialDate(mYear, mMonth, mDay)
+        datePickerTimeline.setDisabledDateColor(
+            ContextCompat.getColor(activity!!,
+            R.color.colorAccent
+        ))
+        datePickerTimeline.setActiveDate(date)
+
+        val dates = arrayOf(Calendar.getInstance().time)
+        datePickerTimeline.deactivateDates(dates)
+
+        loadKota()
+
+        return v
+    }
