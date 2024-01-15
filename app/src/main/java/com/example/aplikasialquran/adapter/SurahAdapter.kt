@@ -18,3 +18,7 @@ class SurahAdapter(
     interface OnSelectedData {
         fun onSelected(modelSurah: ModelSurah?)
     }
+      override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.list_item_surah, parent, false)
+        return ViewHolder(v)
+    }
