@@ -121,3 +121,36 @@ class FragmentJadwalSholat : BottomSheetDialogFragment() {
         }
 
     }
+
+        private fun loadKota() {
+        try {
+            progressDialog!!.show()
+            val url = "https://api.banghasan.com/sholat/format/json/kota"
+            val task = ClientAsyncTask(this, object : ClientAsyncTask.OnPostExecuteListener {
+                override fun onPostExecute(result: String) {
+                    try {
+                        progressDialog!!.dismiss()
+                        val jsonObj = JSONObject(result)
+                        val jsonArray = jsonObj.getJSONArray("kota")
+                        var daftarKota: DaftarKota?
+                        for (i in 0 until jsonArray.length()) {
+                            val obj = jsonArray.getJSONObject(i)
+                            daftarKota = DaftarKota()
+                            daftarKota.id = obj.getInt("id")
+                            daftarKota.nama = obj.getString("nama")
+                            listDaftarKota!!.add(daftarKota)
+                        }
+                        mDaftarKotaAdapter!!.notifyDataSetChanged()
+
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                }
+
+            })
+            task.execute(url)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+}
