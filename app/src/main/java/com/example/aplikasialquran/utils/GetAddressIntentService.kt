@@ -33,8 +33,7 @@ class GetAddressIntentService : IntentService(IDENTIFIER) {
         }
         val geocoder = Geocoder(this, Locale.getDefault())
         var addresses: List<Address>? = null
-
-          try {
+        try {
             addresses = geocoder.getFromLocation(
                 location.latitude,
                 location.longitude,
@@ -67,7 +66,7 @@ class GetAddressIntentService : IntentService(IDENTIFIER) {
         }
     }
 
-      //to send results to receiver in the source activity
+    //to send results to receiver in the source activity
     private fun sendResultsToReceiver(resultCode: Int, message: String) {
         val bundle = Bundle()
         bundle.putString("address_result", message)
