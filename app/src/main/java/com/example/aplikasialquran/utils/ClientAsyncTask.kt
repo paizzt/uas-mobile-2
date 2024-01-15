@@ -25,3 +25,10 @@ class GetAddressIntentService : IntentService(IDENTIFIER) {
 
          val geocoder = Geocoder(this, Locale.getDefault())
         var addresses: List<Address>? = null
+
+         try {
+            addresses = geocoder.getFromLocation(
+                location.latitude,
+                location.longitude,
+                1)
+        }
