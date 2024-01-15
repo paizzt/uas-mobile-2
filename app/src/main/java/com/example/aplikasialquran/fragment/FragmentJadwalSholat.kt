@@ -30,3 +30,8 @@ class FragmentJadwalSholat : BottomSheetDialogFragment() {
             return f
         }
     }
+
+     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mString = arguments!!.getString("detail")
+    }
