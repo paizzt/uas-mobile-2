@@ -33,3 +33,36 @@ class GetAddressIntentService : IntentService(IDENTIFIER) {
         }
         val geocoder = Geocoder(this, Locale.getDefault())
         var addresses: List<Address>? = null
+
+          try {
+            addresses = geocoder.getFromLocation(
+                location.latitude,
+                location.longitude,
+                1)
+        } catch (ignored: Exception) {
+        }
+        if (addresses == null || addresses.size == 0) {
+            msg = "No address found for the location"
+            sendResultsToReceiver(1, msg)
+        } else {
+            val address = addresses[0]
+            val addressDetails = StringBuffer()
+
+            addressDetails.append(address.getFeatureName());
+            addressDetails.append("\n");
+            addressDetails.append(address.getLocality());
+            addressDetails.append("\n");
+            addressDetails.append(address.getSubAdminArea());
+            addressDetails.append("\n");
+            addressDetails.append(address.getPostalCode());
+            addressDetails.append("\n");
+            addressDetails.append(address.getThoroughfare());
+            addressDetails.append("\n");
+            addressDetails.append(address.getCountryName());
+            addressDetails.append("\n");
+
+            addressDetails.append(address.adminArea)
+            addressDetails.append("\n")
+            sendResultsToReceiver(2, addressDetails.toString())
+        }
+    }
