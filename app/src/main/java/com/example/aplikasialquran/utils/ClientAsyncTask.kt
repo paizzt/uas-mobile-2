@@ -2,78 +2,68 @@
 
 package com.example.aplikasialquran.utils
 
-import android.app.IntentService
-import android.content.Intent
-import android.location.Address
-import android.location.Geocoder
-import android.location.Location
-import android.os.Bundle
-import android.os.ResultReceiver
-import java.util.*
+import android.os.AsyncTask
+import com.example.aplikasialquran.fragment.FragmentJadwalSholat
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 
-class GetAddressIntentService : IntentService(IDENTIFIER) {
-    private var addressResultReceiver: ResultReceiver? = null
+@Suppress("DEPRECATION")
+class ClientAsyncTask(private val mContext: FragmentJadwalSholat,
+                      postExecuteListener: OnPostExecuteListener) : AsyncTask<String, String, String>() {
+    private val CONNECTON_TIMEOUT_MILLISECONDS = 60000
+    private val mPostExecuteListener: OnPostExecuteListener = postExecuteListener
 
-    //handle the address request
-    override fun onHandleIntent(intent: Intent?) {
-        var msg = ""
+    interface OnPostExecuteListener {
+        fun onPostExecute(result: String)
+    }
 
-        //get result receiver from intent
-        addressResultReceiver = intent!!.getParcelableExtra("add_receiver")
-        if (addressResultReceiver == null) {
-            return
-        }
-        val location = intent.getParcelableExtra<Location>("add_location")
+    override fun onPostExecute(result: String) {
+        super.onPostExecute(result)
+        mPostExecuteListener.onPostExecute(result)
+    }
 
-        //send no location error to results receiver
-        if (location == null) {
-            msg = "No location, can't go further without location"
-            sendResultsToReceiver(0, msg)
-            return
-        }
-        val geocoder = Geocoder(this, Locale.getDefault())
-        var addresses: List<Address>? = null
+    override fun doInBackground(vararg urls: String?): String {
+        var urlConnection: HttpURLConnection? = null
+
         try {
-            addresses = geocoder.getFromLocation(
-                location.latitude,
-                location.longitude,
-                1)
-        } catch (ignored: Exception) {
+            val url = URL(urls[0])
+
+            urlConnection = url.openConnection() as HttpURLConnection
+            urlConnection.connectTimeout = CONNECTON_TIMEOUT_MILLISECONDS
+            urlConnection.readTimeout = CONNECTON_TIMEOUT_MILLISECONDS
+
+            return streamToString(urlConnection.inputStream)
+        } catch (ex: Exception) {
+
+        } finally {
+            urlConnection?.disconnect()
         }
-        if (addresses == null || addresses.size == 0) {
-            msg = "No address found for the location"
-            sendResultsToReceiver(1, msg)
-        } else {
-            val address = addresses[0]
-            val addressDetails = StringBuffer()
 
-            addressDetails.append(address.getFeatureName());
-            addressDetails.append("\n");
-            addressDetails.append(address.getLocality());
-            addressDetails.append("\n");
-            addressDetails.append(address.getSubAdminArea());
-            addressDetails.append("\n");
-            addressDetails.append(address.getPostalCode());
-            addressDetails.append("\n");
-            addressDetails.append(address.getThoroughfare());
-            addressDetails.append("\n");
-            addressDetails.append(address.getCountryName());
-            addressDetails.append("\n");
+        return ""
+    }
 
-            addressDetails.append(address.adminArea)
-            addressDetails.append("\n")
-            sendResultsToReceiver(2, addressDetails.toString())
+    private fun streamToString(inputStream: InputStream): String {
+
+        val bufferReader = BufferedReader(InputStreamReader(inputStream))
+        var line: String
+        var result = ""
+
+        try {
+            do {
+                line = bufferReader.readLine()
+                if (line != null) {
+                    result += line
+                }
+            } while (true)
+            inputStream.close()
+        } catch (ex: Exception) {
+
         }
+
+        return result
     }
 
-    //to send results to receiver in the source activity
-    private fun sendResultsToReceiver(resultCode: Int, message: String) {
-        val bundle = Bundle()
-        bundle.putString("address_result", message)
-        addressResultReceiver!!.send(resultCode, bundle)
-    }
-
-    companion object {
-        private const val IDENTIFIER = "GetAddressIntentService"
-    }
 }
