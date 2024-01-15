@@ -22,3 +22,6 @@ class GetAddressIntentService : IntentService(IDENTIFIER) {
             sendResultsToReceiver(0, msg)
             return
         }
+
+         val geocoder = Geocoder(this, Locale.getDefault())
+        var addresses: List<Address>? = null
