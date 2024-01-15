@@ -12,7 +12,18 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.annotation.Nullable
-
+import androidx.core.content.ContextCompat
+import com.example.aplikasialquran.R
+import com.example.aplikasialquran.model.DaftarKota
+import com.example.aplikasialquran.utils.ClientAsyncTask
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.vivekkaushik.datepicker.DatePickerTimeline
+import kotlinx.android.synthetic.main.fragment_jadwal_sholat.*
+import org.json.JSONException
+import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 @Suppress("DEPRECATION")
 class FragmentJadwalSholat : BottomSheetDialogFragment() {
@@ -27,7 +38,7 @@ class FragmentJadwalSholat : BottomSheetDialogFragment() {
         (view!!.parent as View).setBackgroundColor(Color.TRANSPARENT)
     }
 
-     companion object {
+    companion object {
         @JvmStatic
         fun newInstance(string: String?): FragmentJadwalSholat {
             val f = FragmentJadwalSholat()
@@ -38,7 +49,7 @@ class FragmentJadwalSholat : BottomSheetDialogFragment() {
         }
     }
 
-     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mString = arguments!!.getString("detail")
     }
@@ -66,7 +77,7 @@ class FragmentJadwalSholat : BottomSheetDialogFragment() {
             }
         }
 
-           val datePickerTimeline: DatePickerTimeline = v.findViewById(R.id.dateTimeline)
+        val datePickerTimeline: DatePickerTimeline = v.findViewById(R.id.dateTimeline)
         val date = Calendar.getInstance()
         val mYear: Int = date.get(Calendar.YEAR)
         val mMonth: Int = date.get(Calendar.MONTH)
@@ -87,7 +98,7 @@ class FragmentJadwalSholat : BottomSheetDialogFragment() {
         return v
     }
 
-       @SuppressLint("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat")
     private fun loadJadwal(id: Int?) {
         try {
             progressDialog!!.show()
@@ -122,7 +133,7 @@ class FragmentJadwalSholat : BottomSheetDialogFragment() {
 
     }
 
-        private fun loadKota() {
+    private fun loadKota() {
         try {
             progressDialog!!.show()
             val url = "https://api.banghasan.com/sholat/format/json/kota"
