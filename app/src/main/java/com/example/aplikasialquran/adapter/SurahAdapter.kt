@@ -18,7 +18,8 @@ class SurahAdapter(
     interface OnSelectedData {
         fun onSelected(modelSurah: ModelSurah?)
     }
-      override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.list_item_surah, parent, false)
         return ViewHolder(v)
     }
@@ -37,7 +38,7 @@ class SurahAdapter(
         return items.size
     }
 
-     //Class Holder
+    //Class Holder
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var cvSurah: CardView = itemView.findViewById(R.id.cvSurah)
         var txtNumber: TextView = itemView.findViewById(R.id.txtNumber)
