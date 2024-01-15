@@ -32,3 +32,7 @@ class SurahAdapter(
         holder.txtName.text = data.asma
         holder.cvSurah.setOnClickListener { onSelectData.onSelected(data) }
     }
+
+    override fun getItemCount(): Int {
+        return items.size
+    }
