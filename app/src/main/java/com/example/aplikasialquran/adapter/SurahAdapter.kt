@@ -22,3 +22,13 @@ class SurahAdapter(
         val v = LayoutInflater.from(parent.context).inflate(R.layout.list_item_surah, parent, false)
         return ViewHolder(v)
     }
+
+    @SuppressLint("SetTextI18n")
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val data = items[position]
+        holder.txtNumber.text = data.nomor
+        holder.txtAyat.text = data.nama
+        holder.txtInfo.text = data.type + " - " + data.ayat + " Ayat "
+        holder.txtName.text = data.asma
+        holder.cvSurah.setOnClickListener { onSelectData.onSelected(data) }
+    }
