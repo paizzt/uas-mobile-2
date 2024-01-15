@@ -36,3 +36,15 @@ class SurahAdapter(
     override fun getItemCount(): Int {
         return items.size
     }
+
+     //Class Holder
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var cvSurah: CardView = itemView.findViewById(R.id.cvSurah)
+        var txtNumber: TextView = itemView.findViewById(R.id.txtNumber)
+        var txtAyat: TextView = itemView.findViewById(R.id.txtAyat)
+        var txtInfo: TextView = itemView.findViewById(R.id.txtInfo)
+        var txtName: TextView = itemView.findViewById(R.id.txtName)
+
+    }
+
+}
